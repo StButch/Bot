@@ -34,10 +34,6 @@ async def start_command(message: types.Message):
     await message.answer_photo(photo=open('pictures/what do you want.jpg', 'rb'))
     await message.delete()
 
-# @dp.message_handler(commands=['cancel'])
-# async def cancel_command(message: types.Message):
-#     await state.reset(reply_markup=types.ReplyKeyboardRemove())
-
 @dp.message_handler(commands=['help'])
 async def help_command(message: types.Message):
     await bot.send_message(chat_id=message.from_user.id, text=abc,  parse_mode='HTML')
@@ -85,35 +81,14 @@ async def get_user_text(message: types.Message):
                                reply_markup=InlineKeyboardMarkup(row_width=1).add(creator))
     elif 'что у нас сегодня' in message.text.lower():
         await message.answer(f'Вроде {week[date_now.weekday()]}')
-    elif 'пенси' in message.text.lower():
-        await message.reply(f'Душнилы, опять их серить будете???')
     elif 'какой день недели' in message.text.lower():
         answer = what_day_of_week(message.text.lower())
         await message.answer(answer)
         if answer == 'мне так не понятно...':
             await message.answer_sticker(
                              sticker="CAACAgIAAxkBAAEHg9Bj18gcFfcazFLufRv_T1cFnFcHRgACIAMAAs-71A4jijg8wgu1oC0E")
-    elif 'юра' in message.text.lower():
-        await bot.send_message(message.chat.id, 'Тебе зачем то нужен мой хозяин?')
     elif message.text.lower() == 'погода':
         await weather_command(message)
-    elif 'хуй' in message.text.lower():
-        await message.answer_photo(photo=open("pictures/don't swear.jpg", 'rb'))
-    elif message.text.lower() == 'украина':
-        await message.answer('Героем слава! '+'\U0001F1FA'+'\U0001F1E6')
-        await message.answer_sticker(
-            sticker=
-            'CAACAgIAAxkBAAEI8mhkXOmu-Zj7h0x0y2xnl-U-SoKgjgAClRwAAlivMUq5Afd47NSGRS8E')
-    elif message.text.lower() == 'белорусь':
-        await message.answer('Жыве́ Белару́сь!')
-        await message.answer_sticker(
-            sticker=
-        'CAACAgIAAxkBAAEI8jlkXOXM0XrDQLq4IhuCeUhDuI6dmgACBwEAAvcCyA9SzoqdIwTewy8E')
-    elif message.text.lower() == 'россия':
-        await message.answer('Россия будет свободной')
-        await message.answer_sticker(
-            sticker=
-            'CAACAgIAAxkBAAEI8kNkXOcxPS7zaldZgGe_DyJyGi3SyAACciMAApqEyUvXL_ysNOypHy8E')
 
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True)
