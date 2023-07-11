@@ -8,6 +8,7 @@ from aiogram.dispatcher.filters.state import StatesGroup, State
 from aiogram.dispatcher import FSMContext
 from kbs import kb_weather, kb_exchange
 from exchange import get_exchange
+import easyocr
 
 
 abc = """
@@ -90,6 +91,16 @@ async def get_user_text(message: types.Message):
     elif message.text.lower() == 'погода':
         await weather_command(message)
 
+@dp.message_handler(content_types=['photo'])
+async def process_photo(message: types.Message):
+    reader = easyocr.Reader(['ru','en'])
+    file_id = message.photo[-1].file_id
+    file = await bot.get_file(file_id)
+    file_path = file.file_path
+    photo_url = f'https://api.telegram.org/file/bot{token_bot}/{file_path}'
+    answer = (reader.readtext(f'{photo_url}', detail=0, paragraph=True))
+    await message.answer(f'{answer}')
+
+
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True)
-
